@@ -2,6 +2,7 @@
 /**
  * Shows an Voting Component
  * ggf. mit multi = true aufrufen
+ * 
  */
 
 
