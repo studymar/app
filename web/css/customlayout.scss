@@ -1,0 +1,370 @@
+/* CSS Document */
+$background: #3a4651;
+$background-hover: rgb(68, 80, 91);
+$background-hover-dark: #2d363f; /*bsp navigation*/
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+
+.btn-outline-primary:hover {
+    color: #fff !important;
+    background-color: #72b22b !important;
+    border-color: #6ba829 !important;
+    .material-icons {
+        color: #fff;
+    }
+}
+.btn-outline-primary {
+    border-color: #6ba829 !important;
+    color: #6ba829 !important;
+    .material-icons {
+        color: #6ba829;
+    }
+}
+
+.caption-top caption{
+    caption-side: top !important;
+}
+
+
+.invalid {
+    color: red;
+}
+
+/* icons in correct size */
+.material-icons {
+  padding:0;
+  font-size: 18px;
+  color:#000000;
+  &.disabled {
+      color: silver;
+  }
+  &.empty {
+      width: 18px;
+      height: 18px;
+  }
+}
+.btn {
+    &.single {
+        padding: .175rem .45rem .0rem;
+    }
+}
+
+#content {
+    font-size: 1.3rem;
+    .content-block {
+        border: 1px solid silver;
+    }
+}
+
+/** article **/
+article {
+    .card {
+        background: transparent;
+    }
+    h2.title-block {
+        font-size: 1.6rem;        
+        border-color: silver;
+    }
+    .title-block {
+        border-color: silver;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+        h2 {
+            font-size: 1.6rem;
+        }
+        &:after {
+            content: normal;
+        }
+    }
+    
+    .bar {
+        transition: right 0.6s ease;
+        position: absolute;
+        top: 0px;
+        right: -300px;
+        left: auto;
+        width: 0px;
+        height: 0px; /* Full height (cover the whole page) */
+        background-color: #3a4651;
+        color: #ffffff;
+        z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+        padding: 10px;
+        &.show {
+            transition: right 0.6s ease;
+            right: 0px;
+            width: 300px;
+            height: 100%;
+        }
+        .btn-close {
+            margin: 15px;
+        }
+        .title-block {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            margin: 0 0 0 0px;
+            padding: 0;
+            li a {
+                color: rgba(255, 255, 255, 0.5);
+                text-decoration: none;
+                display: block;
+                padding: 10px 5px;
+                &:hover {
+                    color: #ffffff;            
+                    text-decoration: none;
+                    i {
+                        color: #ffffff;            
+                    }
+                }
+                i {
+                    color: #969696;                
+                    margin-right: 5px;
+                    font-size: 16px;
+                    &.material-icons {
+                        position: relative;
+                        top: 2px;
+                    }
+                }
+            }
+            ul { /*submenu*/
+                list-style: none;
+            }
+        }        
+    }
+    .content-block {
+        overflow: hidden;
+        position: relative;
+        background-color: #fff;
+        max-width: 610px;
+        min-height: 400px;
+        border-radius: 5px;
+        @media only screen and (min-width: $breakpoint-sm) {
+            padding: 5px; /* Randabstände erst ab höherer Auflösung*/
+        }
+        .title-block {
+            padding-top:5px;
+        }
+        .template-headline {
+            min-height: 25px;
+            margin: 0px;
+            .btn {
+                width: 100%;
+                padding: 0px;
+                margin: 0px;
+                margin-bottom: 1px;
+            }
+        }
+    }
+    
+    #voting {
+        position: relative;
+        margin-bottom: 5px;
+        .overlay {
+            &.sort {
+                background-color: rgba(0,0,0,0.7); /* Black background with opacity */
+                z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+            }
+            position: absolute; /* Sit on top of the page content */
+            /*display: none; /* Hidden by default */
+            width: 100%; /* Full width (cover the whole page) */
+            height: 100%; /* Full height (cover the whole page) */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7); /* Black background with opacity */
+            z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+            cursor: pointer; /* Add a pointer on hover */
+            color: #ffffff;
+            text-align: center;
+            cursor: initial;
+            .overlay-buttons {
+                @media only screen and (max-width: $breakpoint-sm - 1) {
+                    margin: 10% 0;
+                }            
+                @media only screen and (min-width: $breakpoint-sm) {
+                    margin: 3% 0;
+                }
+                a {
+                    background-color: rgba(0,0,0,0.4); /* Black background with opacity */
+                    width: 150px;
+                    color: #ffffff;
+                    &:hover {
+                        background-color: $background-hover-dark; /* Black background with opacity */
+                    }
+                }
+            }
+            .release-info {
+                margin: 10px;
+            }
+
+        }
+    }
+    
+}
+
+
+/* Votings */
+#voting .row {
+    @media only screen and (max-width: $breakpoint-sm) {
+        --bs-gutter-x: 0.0rem !important;
+    }
+}
+
+.notOnSmall {
+    @media only screen and (max-width: $breakpoint-sm) {
+        display:none;
+    }
+}
+.onlySmall {
+    @media only screen and (min-width: $breakpoint-sm) {
+        display:none;
+    }
+}
+.hiddenOnSmall {
+    @media only screen and (max-width: $breakpoint-sm) {
+        display:none;
+    }
+}
+
+.btn-light:hover {
+    background-color: #e2e6ea !important;
+}
+
+#voting {
+    .row {
+        --bs-gutter-x: 0rem;
+    }
+    
+}
+#votingTopicComponent {
+    .title-block {
+        .material-icons {
+        }
+    }
+    .bigicon .material-icons {
+        position:relative;
+        top:0px;
+        font-size: 30px;
+        &.red {
+            color: red;
+        }
+        &.green {
+            color: #85CE36;
+        }
+    }
+    .property-list {
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+        .material-icons {
+            position:relative;
+            top:3px;
+            &.red {
+                color: red;
+            }
+            &.green {
+                color: #85CE36;
+            }
+        }
+        
+    }
+    
+}
+
+
+
+.voting-topic-list {
+    min-height: 400px;
+    margin-top: -5px !important;
+    margin-bottom: -10px;
+    height: 100%;
+    @media only screen and (max-width: $breakpoint-sm) {
+        padding: 10px !important;
+    }
+    h3 {
+    }
+    #newVotingtopicButton {
+        .single {
+            padding: 0.1rem 0.3rem .0rem;
+        }
+    }
+    .card {
+        border-bottom: 1px solid silver;
+        &.active {
+            background-color: rgba(0,0,0,.025);
+        }
+        .card-body {
+            /* padding: 0.4rem; */
+            &:hover {
+                background-color: rgba(0,0,0,.025);
+            }
+            h5 {
+            }
+        }
+    }
+}
+
+.list-group-item {
+    &.inactive {
+        opacity: 0.3;
+        background: aliceblue;
+    }
+}
+
+.voting-list {
+    .list-group {
+        a p {
+            font-weight: normal;
+        }
+        .header {
+            margin-bottom: 10px;
+        }
+    }
+    .input-group {
+        /*Umrandung, wenn ausgewählt*/
+        .input-group-text.selected {
+            border-color: green;
+        }
+        .option.selected {
+            border-top-color: green;
+            border-right-color: green;
+            border-bottom-color: green;
+        }
+        .option {
+            border: 1px solid #ced4da;
+            &.disabled {
+                background-color: #e9ecef;
+            }
+        }        
+    }
+    .form-group {
+        .saved {
+            margin-bottom: 10px;
+        }
+    }
+    small {
+        color: green;
+        font-style: italic;
+    }
+    /*edit-topic-voting*/
+    .questiontype {
+        font-weight: normal;
+        color: #000000;
+        
+    }
+    .questionstatus {
+        font-weight: normal;
+        &.active {
+           color:green;              
+        }
+        &.inactive {
+           color:red;
+        }
+    }
+        
+}
+
+

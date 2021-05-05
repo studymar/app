@@ -1,0 +1,269 @@
+@charset "UTF-8";
+/* CSS Document */
+/*bsp navigation*/
+.btn-outline-primary:hover {
+  color: #fff !important;
+  background-color: #72b22b !important;
+  border-color: #6ba829 !important; }
+  .btn-outline-primary:hover .material-icons {
+    color: #fff; }
+
+.btn-outline-primary {
+  border-color: #6ba829 !important;
+  color: #6ba829 !important; }
+  .btn-outline-primary .material-icons {
+    color: #6ba829; }
+
+.caption-top caption {
+  caption-side: top !important; }
+
+.invalid {
+  color: red; }
+
+/* icons in correct size */
+.material-icons {
+  padding: 0;
+  font-size: 18px;
+  color: #000000; }
+  .material-icons.disabled {
+    color: silver; }
+  .material-icons.empty {
+    width: 18px;
+    height: 18px; }
+
+.btn.single {
+  padding: .175rem .45rem .0rem; }
+
+#content {
+  font-size: 1.3rem; }
+  #content .content-block {
+    border: 1px solid silver; }
+
+/** article **/
+article .card {
+  background: transparent; }
+article h2.title-block {
+  font-size: 1.6rem;
+  border-color: silver; }
+article .title-block {
+  border-color: silver;
+  padding-bottom: 5px;
+  margin-bottom: 15px; }
+  article .title-block h2 {
+    font-size: 1.6rem; }
+  article .title-block:after {
+    content: normal; }
+article .bar {
+  transition: right 0.6s ease;
+  position: absolute;
+  top: 0px;
+  right: -300px;
+  left: auto;
+  width: 0px;
+  height: 0px;
+  /* Full height (cover the whole page) */
+  background-color: #3a4651;
+  color: #ffffff;
+  z-index: 2;
+  /* Specify a stack order in case you're using a different order for other elements */
+  padding: 10px; }
+  article .bar.show {
+    transition: right 0.6s ease;
+    right: 0px;
+    width: 300px;
+    height: 100%; }
+  article .bar .btn-close {
+    margin: 15px; }
+  article .bar .title-block {
+    margin-bottom: 10px; }
+  article .bar ul {
+    list-style: none;
+    margin: 0 0 0 0px;
+    padding: 0; }
+    article .bar ul li a {
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      display: block;
+      padding: 10px 5px; }
+      article .bar ul li a:hover {
+        color: #ffffff;
+        text-decoration: none; }
+        article .bar ul li a:hover i {
+          color: #ffffff; }
+      article .bar ul li a i {
+        color: #969696;
+        margin-right: 5px;
+        font-size: 16px; }
+        article .bar ul li a i.material-icons {
+          position: relative;
+          top: 2px; }
+    article .bar ul ul {
+      /*submenu*/
+      list-style: none; }
+article .content-block {
+  overflow: hidden;
+  position: relative;
+  background-color: #fff;
+  max-width: 610px;
+  min-height: 400px;
+  border-radius: 5px; }
+  @media only screen and (min-width: 576px) {
+    article .content-block {
+      padding: 5px;
+      /* Randabst├ñnde erst ab h├Âherer Aufl├Âsung*/ } }
+  article .content-block .title-block {
+    padding-top: 5px; }
+  article .content-block .template-headline {
+    min-height: 25px;
+    margin: 0px; }
+    article .content-block .template-headline .btn {
+      width: 100%;
+      padding: 0px;
+      margin: 0px;
+      margin-bottom: 1px; }
+article #voting {
+  position: relative;
+  margin-bottom: 5px; }
+  article #voting .overlay {
+    position: absolute;
+    /* Sit on top of the page content */
+    /*display: none; /* Hidden by default */
+    width: 100%;
+    /* Full width (cover the whole page) */
+    height: 100%;
+    /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Black background with opacity */
+    z-index: 2;
+    /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer;
+    /* Add a pointer on hover */
+    color: #ffffff;
+    text-align: center;
+    cursor: initial; }
+    article #voting .overlay.sort {
+      background-color: rgba(0, 0, 0, 0.7);
+      /* Black background with opacity */
+      z-index: 2;
+      /* Specify a stack order in case you're using a different order for other elements */ }
+    @media only screen and (max-width: 575px) {
+      article #voting .overlay .overlay-buttons {
+        margin: 10% 0; } }
+    @media only screen and (min-width: 576px) {
+      article #voting .overlay .overlay-buttons {
+        margin: 3% 0; } }
+    article #voting .overlay .overlay-buttons a {
+      background-color: rgba(0, 0, 0, 0.4);
+      /* Black background with opacity */
+      width: 150px;
+      color: #ffffff; }
+      article #voting .overlay .overlay-buttons a:hover {
+        background-color: #2d363f;
+        /* Black background with opacity */ }
+    article #voting .overlay .release-info {
+      margin: 10px; }
+
+/* Votings */
+@media only screen and (max-width: 576px) {
+  #voting .row {
+    --bs-gutter-x: 0.0rem !important; } }
+
+@media only screen and (max-width: 576px) {
+  .notOnSmall {
+    display: none; } }
+
+@media only screen and (min-width: 576px) {
+  .onlySmall {
+    display: none; } }
+
+@media only screen and (max-width: 576px) {
+  .hiddenOnSmall {
+    display: none; } }
+
+.btn-light:hover {
+  background-color: #e2e6ea !important; }
+
+#voting .row {
+  --bs-gutter-x: 0rem; }
+
+#votingTopicComponent .bigicon .material-icons {
+  position: relative;
+  top: 0px;
+  font-size: 30px; }
+  #votingTopicComponent .bigicon .material-icons.red {
+    color: red; }
+  #votingTopicComponent .bigicon .material-icons.green {
+    color: #85CE36; }
+#votingTopicComponent .property-list {
+  list-style: none;
+  margin: 0px;
+  padding: 0px; }
+  #votingTopicComponent .property-list .material-icons {
+    position: relative;
+    top: 3px; }
+    #votingTopicComponent .property-list .material-icons.red {
+      color: red; }
+    #votingTopicComponent .property-list .material-icons.green {
+      color: #85CE36; }
+
+.voting-topic-list {
+  min-height: 400px;
+  margin-top: -5px !important;
+  margin-bottom: -10px;
+  height: 100%; }
+  @media only screen and (max-width: 576px) {
+    .voting-topic-list {
+      padding: 10px !important; } }
+  .voting-topic-list #newVotingtopicButton .single {
+    padding: 0.1rem 0.3rem .0rem; }
+  .voting-topic-list .card {
+    border-bottom: 1px solid silver; }
+    .voting-topic-list .card.active {
+      background-color: rgba(0, 0, 0, 0.025); }
+    .voting-topic-list .card .card-body {
+      /* padding: 0.4rem; */ }
+      .voting-topic-list .card .card-body:hover {
+        background-color: rgba(0, 0, 0, 0.025); }
+
+.list-group-item.inactive {
+  opacity: 0.3;
+  background: aliceblue; }
+
+.voting-list {
+  /*edit-topic-voting*/ }
+  .voting-list .list-group a p {
+    font-weight: normal; }
+  .voting-list .list-group .header {
+    margin-bottom: 10px; }
+  .voting-list .input-group {
+    /*Umrandung, wenn ausgew├ñhlt*/ }
+    .voting-list .input-group .input-group-text.selected {
+      border-color: green; }
+    .voting-list .input-group .option.selected {
+      border-top-color: green;
+      border-right-color: green;
+      border-bottom-color: green; }
+    .voting-list .input-group .option {
+      border: 1px solid #ced4da; }
+      .voting-list .input-group .option.disabled {
+        background-color: #e9ecef; }
+  .voting-list .form-group .saved {
+    margin-bottom: 10px; }
+  .voting-list small {
+    color: green;
+    font-style: italic; }
+  .voting-list .questiontype {
+    font-weight: normal;
+    color: #000000; }
+  .voting-list .questionstatus {
+    font-weight: normal; }
+    .voting-list .questionstatus.active {
+      color: green; }
+    .voting-list .questionstatus.inactive {
+      color: red; }
+
+/*# sourceMappingURL=customlayout.css.map */
