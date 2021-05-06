@@ -196,5 +196,26 @@ class Votingtopic extends \yii\db\ActiveRecord
         }
     }    
     
+    public function getActiveVotingWeights(){
+        return Votingweights::find()->where(['votingtopic_id'=>$this->id, 'active'=>1 ])->count();
+    }
+
+    public function getActiveVotingWeightsStimmen(){
+        return Votingweights::find()->where(['votingtopic_id'=>$this->id, 'active'=>1 ])->sum('stimmen');
+    }
+    
+    /**
+     * Gibt die höchste Anzahl von Antworten in den Questions des Topic zurück
+     * @return int
+     */
+    public function countActiveAtTopic() {
+        $anz = 0;
+        foreach($this->votingquestions as $question){
+            $maxAnswers = Votinganswer::countResultsByAnswerer($question);
+            if($maxAnswers > $anz)
+                $anz = $maxAnswers;            
+        }
+        return $anz;
+    }
     
 }

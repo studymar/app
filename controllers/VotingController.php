@@ -19,6 +19,7 @@ use app\models\voting\Votingtype;
 use app\models\voting\Votinganswer;
 use app\models\voting\Votingweights;
 use app\models\voting\Votingoption;
+use app\models\voting\Votingresultstatistic;
 
 class VotingController extends Controller
 {
@@ -295,5 +296,89 @@ class VotingController extends Controller
         }
 
     }
+    
+    
+    /**
+     * Abruf der Ergebnisse eines Votings
+     * @param $p ID der Votingquestion
+     * @return array
+     */
+    public function actionGetResults($p)
+    {
+        try {
+            $modelQuery = Votingquestion::find()->where('id = '.$p);
+            $model = Votingquestion::find()->where('id = '.$p)->one();
+                
+            $countresults   = 0;
+            $sumValues      = 0;
+            $resultstatistics = [];
+            
+            if($model){
+                //bei Gewichtung
+                if($model->hasweighting){
+                    if($model->votingtype->name == "radio")
+                        $result = \app\models\voting\Votingresultstatistic::getResultstatisticsWithWeightingRadio($model);
+                    else if($model->votingtype->name == "checkbox")
+                        $result = \app\models\voting\Votingresultstatistic::getResultstatisticsWithWeightingCheckbox($model);
+                    else if($model->votingtype->name == "text") {
+                        $result = \app\models\voting\Votingresultstatistic::getResultstatisticsWithoutWeighting($model);                        
+                    }
+                }
+                //ohne Gewichtung
+                else {
+                    if($model->votingtype->name == "radio")
+                        $result = \app\models\voting\Votingresultstatistic::getResultstatisticsWithoutWeightingRadioOrCheckbox($model);
+                    else if($model->votingtype->name == "checkbox")
+                        $result = \app\models\voting\Votingresultstatistic::getResultstatisticsWithoutWeightingRadioOrCheckbox($model);
+                    else if($model->votingtype->name == "text") {
+                        $result = \app\models\voting\Votingresultstatistic::getResultstatisticsWithoutWeighting($model);                        
+                    }
+                }
+                
+                return $this->asJson([
+                    'result' => $result
+                ]);
+                
+                //Anzahl antworten rausuchen
+                $countresults   = Votinganswer::countResultsByAnswerer($model);
+                //Anzahl abgegebener Stimmen
+                if($model->hasweighting && $model->votingtype->name == "radio"){
+                    $sumValues      = Votinganswer::countResultsByStimmen($model);
+                    if($sumValues == null) $sumValues = 0;
+                }
+                else {
+                    $sumValues      = Votinganswer::countResultsByValues($model);
+                }
+                
+                //results nur ausgeben, wenn erlaubt und schon abgestimmt
+                if($model->votingtype->name == "text")
+                    $resultstatistics = Votinganswer::getResultStatisticsPerValue($model, $sumValues);
+                else if($model->hasweighting && $model->votingtype->name == "radio")
+                    $resultstatistics = Votinganswer::getResultStatisticsPerOption($model, $sumValues, true);
+                else
+                    $resultstatistics = Votinganswer::getResultStatisticsPerOption($model, $sumValues);
+                //aktive Antworter laden
+                $active = $model->votingtopic->getActiveVotingWeights();
+            }
+            
+            return $this->asJson([
+                'countresults' => $countresults,
+                'resultstatistics' => $resultstatistics,
+                'sumValues' => $sumValues,
+                'active' => $active
+            ]);
+
+
+        } catch (\yii\db\Exception $e){
+            Yii::error($e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            throw new ServerErrorHttpException("Votingquestion konnte nicht geladen werden");
+        } catch (Exception $e){
+            Yii::error($e->getMessage().$e->getFile().'('.$e->getLine().')'.$e->getTraceAsString());
+            throw new ServerErrorHttpException("Votingquestion konnte nicht geladen werden: ");
+        }
+
+    }
+    
+    
     
 }

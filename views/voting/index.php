@@ -18,6 +18,7 @@ else $env_vuecomponent_dir = "vue-components/voting/";
 include_once($env_vuecomponent_dir.'VotingTopicListComponent.php');
 include_once($env_vuecomponent_dir.'VotingTopicComponent.php');
 include_once($env_vuecomponent_dir.'VotingQuestionComponent.php');
+include_once($env_vuecomponent_dir.'VotingquestionResultComponent.php');
 
 ?>
 
@@ -53,6 +54,14 @@ include_once($env_vuecomponent_dir.'VotingQuestionComponent.php');
                         ref="question"
                         >
                     </voting-question-component>
+                    
+                    <voting-question-result-component
+                        v-if="view == 'question-result'"
+                        v-bind:topic="topic"
+                        v-bind:question="question"
+                        >
+                    </voting-question-result-component>
+                    
                 </div>
             </div>
         </div>
@@ -66,7 +75,8 @@ include_once($env_vuecomponent_dir.'VotingQuestionComponent.php');
         components: {
             votingTopicListComponent,
             votingTopicComponent,
-            votingQuestionComponent
+            votingQuestionComponent,
+            votingQuestionResultComponent
         },
         data: {
             view: null,
@@ -98,6 +108,11 @@ include_once($env_vuecomponent_dir.'VotingQuestionComponent.php');
                 //topic beibehalten
                 this.question = null
                 this.view = 'topic'
+            },
+            showResults(){
+                //topic beibehalten
+                //question beibehalten
+                this.view = 'question-result'
             },
             setVotingweight(vw){
                 this.votingweight = vw

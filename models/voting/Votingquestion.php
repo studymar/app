@@ -164,9 +164,19 @@ class Votingquestion extends \yii\db\ActiveRecord
     public static function checkVWHasAnswered($votingquestion_id, $votingweight_id){
         $answers = Votinganswer::find()->where(['votingquestion_id'=>$votingquestion_id])->andWhere(['votingweights_id'=>$votingweight_id])->asArray()->all();
         if($answers && count($answers)>0){
-            return 1;
+            $ret     = [];
+            foreach($answers as $answer){
+                if($answer['value']!="")
+                    $ret[] = $answer['value'];
+                else {
+                    $opt_id = $answer['votingoption_id'];
+                    $option = Votingoption::find()->where(['id'=>$opt_id])->one();
+                    $ret[]  = $option->value; 
+                }
+            }
+            return $ret;
         }
-        return 0;
+        return [];
     }
 
     public static function checkHasAnswered($votingquestion_id){

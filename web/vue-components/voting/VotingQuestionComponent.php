@@ -136,7 +136,12 @@ var votingQuestionComponent = {
             .done(function(data) {
                 if(data.saved){
                     self.config.topErrorSaving = false
-                    self.$parent.closeVote()
+                    if(self.question.showresults == "1"){
+                        self.$parent.showResults()
+                    }
+                    else {
+                        self.$parent.closeVote()
+                    }
                 }
                 else {
                     self.items = []
