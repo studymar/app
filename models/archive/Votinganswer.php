@@ -15,6 +15,7 @@ use yii\web\UnprocessableEntityHttpException;
  * @property string $answerer
  * @property int $votingquestion_id
  * @property int $votingweights_id
+ * @property int $votingoption_id
  * @property int $stimmen
  *
  * @property Votingquestion $votingquestion
@@ -40,10 +41,11 @@ class Votinganswer extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'votingquestion_id'], 'required'],
-            [['id', 'votingquestion_id','votingweights_id','stimmen'], 'integer'],
+            [['id', 'votingquestion_id','votingweights_id','votingoption_id'], 'integer'],
             [['value','answerer'], 'string'],
             [['id'], 'unique'],
             [['votingquestion_id'], 'exist', 'skipOnError' => true, 'targetClass' => Votingquestion::className(), 'targetAttribute' => ['votingquestion_id' => 'id']],
+            [['votingoption_id'], 'exist', 'skipOnError' => true, 'targetClass' => Votingoption::className(), 'targetAttribute' => ['votingoption_id' => 'id']],
         ];
     }
 
@@ -100,13 +102,6 @@ class Votinganswer extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Votingweights::className(), ['id' => 'votingweights_id']);
     }
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVotingoptions()
-    {
-        return $this->hasOne(Votingoption::className(), ['id' => 'votingoption_id']);
-    }
     
     /**
      * Speichert die Antworten
@@ -115,11 +110,11 @@ class Votinganswer extends \yii\db\ActiveRecord
     {
         if(is_array($answers)){
             foreach($answers as $answer){
-                Votinganswer::create($votingquestion, $answer,$votingweights_id,$stimmen);
+                Votinganswer::create($votingquestion, $answer,$votingweights_id);
             }
         }
         else {
-            Votinganswer::create($votingquestion, $answers,$votingweights_id,$stimmen);
+            Votinganswer::create($votingquestion, $answers,$votingweights_id);
         }
         return true;
     }
@@ -127,7 +122,7 @@ class Votinganswer extends \yii\db\ActiveRecord
     /**
      * Legt eine Antwort an
      */
-    private static function create($votingquestion,$answer,$votingweights_id = false, $stimmen = false){
+    private static function create($votingquestion,$answer,$votingweights_id = false){
         $new = new Votinganswer();
         $new->id                = 0;
         $new->votingquestion_id = $votingquestion->id;
@@ -138,8 +133,6 @@ class Votinganswer extends \yii\db\ActiveRecord
         }
         if($votingweights_id)
             $new->votingweights_id  = $votingweights_id;
-        if($stimmen)
-            $new->stimmen       = $stimmen;
         $new->answerer          = sha1(Yii::$app->request->getUserIP());
         if($new->validate()){
             if($new->save()){
@@ -180,7 +173,7 @@ class Votinganswer extends \yii\db\ActiveRecord
      */
     public static function countResultsByAnswerer($votingquestion)
     {
-        //wenn mit gewichtung, die Anzahl unterschiedlicher votingweights-Antworter zählen
+        //wenn mit gewichtung die Anzahl unterschiedlicher votingweights-Antworter zählen
         if($votingquestion->hasweighting)
             return Votinganswer::find()->where('votingquestion_id = '.$votingquestion->id)->select('votingweights_id')->distinct()->count();
         //sonst anzahl unterschiedlicher IPs zählen
@@ -198,35 +191,21 @@ class Votinganswer extends \yii\db\ActiveRecord
     }
 
     /**
-     * Zählt die abgegebenen Antworten
-     * @return int
-     */
-    public static function countResultsByAnswers($votingquestion)
-    {
-        return Votinganswer::find()->where('votingquestion_id = '.$votingquestion->id)->select('id')->count();
-    }
-    
-    
-    /**
      * Zählt die abgegebenen Stimmen
      * @return int
      */
     public static function countResultsByStimmen($votingquestion)
     {
-        return Votinganswer::find()
-                ->where('votingquestion_id = '.$votingquestion->id)
-                ->joinWith(['votingweights'],false)
-                ->sum('votingweights.stimmen');
+        return Votinganswer::find()->where('votingquestion_id = '.$votingquestion->id)->sum('stimmen');
     }
-
     
-
+    
     /**
      * Ergebnisstatistik
      * @param String $value nur Ergebnisse zu einem Values
      * @return int
      */
-    public static function getResultStatisticForText($votingquestion,$value = false)
+    public static function getResultStatistic($votingquestion,$value = false)
     {
         if($value)
             return Votinganswer::find()
@@ -244,86 +223,22 @@ class Votinganswer extends \yii\db\ActiveRecord
                 ->asArray()
                 ->all();
     }
-    
-    
-    /**
-     * Ergebnisstatistik
-     * @param String $value nur Ergebnisse zu einem Values
-     * @return int
-     */
-    public static function getResultStatistic($votingquestion,$votingoption_id = false)
-    {
-        if($votingoption_id){
-            $query = new \yii\db\Query();
-            return $query->select(['votinganswer.votingoption_id','anz'=>'count(*)'])
-                ->from('votinganswer')
-                ->where('votinganswer.votingquestion_id = '.$votingquestion->id)
-                ->andWhere("votinganswer.votingoption_id = '".$votingoption_id."'")
-                ->groupBy(['votinganswer.votingoption_id'])
-                ->all();
-            /*
-            return $query->select(['votingoption.value as value','votinganswer.votingoption_id','anz'=>'count(*)'])
-                ->from('votinganswer')
-                ->where('votinganswer.votingquestion_id = '.$votingquestion->id)
-                ->andWhere("votinganswer.votingoption_id = '".$votingoption_id."'")
-                ->leftJoin('votingoption', ['votinganswer.votingoption_id'=>'votingoption.id'])
-                ->groupBy(['votinganswer.votingoption_id'])
-                ->all();
-            //Yii::debug( $query->createCommand()->getSql());
-            /*
-            return $query->select(['votingoption_id','count(*) as anz'])
-                ->from('votinganswer')
-                ->where('votingquestion_id = '.$votingquestion->id)
-                ->andWhere("votingoption_id = '".$votingoption_id."'")
-                ->groupBy(['votingoption_id'])
-                ->all();
-
-            return Votinganswer::find()
-                ->select(['votingoption_id','count(*) as anz'])
-                ->where('votingquestion_id = '.$votingquestion->id)
-                ->andWhere("votingoption_id = '".$votingoption_id."'")
-                ->groupBy(['votingoption_id'])
-                ->asArray()
-                ->all();
-             
-             */
-        }
-        else
-            return Votinganswer::find()
-                ->select(['votingoption_id','count(*) as anz'])
-                ->where('votingquestion_id = '.$votingquestion->id)
-                ->groupBy('votingoption_id')
-                ->asArray()
-                ->all();
-    }
 
     /**
      * Ergebnisstatistik mit Stimmengewichtung
-     * @param String $votingoption_id nur Ergebnisse zu einem Values
+     * @param String $value nur Ergebnisse zu einem Values
      * @return int
      */
-    public static function getResultStatisticWithStimmen($votingquestion,$votingoption_id = false)
+    public static function getResultStatisticWithStimmen($votingquestion,$value = false)
     {
-        if($votingoption_id)
+        if($value)
             return Votinganswer::find()
-                ->select(['votinganswer.votingoption_id','sum(votingweights.stimmen) as anz'])
-                ->where('votinganswer.votingquestion_id = '.$votingquestion->id)
-                ->andWhere("votinganswer.votingoption_id = '".$votingoption_id."'")
-                ->joinWith(['votingweights' ],false)
-                //->groupBy('votinganswer.votingoption_id')
-                ->asArray()
-                ->one();
-            /*
-            return Votingweights::find()
-                ->select(['votingweights.id','votingweights.name','votinganswer.votingoption_id','sum(votingweights.stimmen) as anz'])
-                ->where('votinganswer.votingquestion_id = '.$votingquestion->id)
-                ->andWhere("votinganswer.votingoption_id = '".$votingoption_id."'")
-                ->joinWith(['votinganswers' ])
-                //->groupBy('votinganswer.votingoption_id')
+                ->select(['value','sum(stimmen) as anz'])
+                ->where('votingquestion_id = '.$votingquestion->id)
+                ->andWhere("value = '".$value."'")
+                ->groupBy('value')
                 ->asArray()
                 ->all();
-             * 
-             */
         else
             return Votinganswer::find()
                 ->select(['value','sum(stimmen) as anz'])
@@ -350,43 +265,25 @@ class Votinganswer extends \yii\db\ActiveRecord
         foreach($options as $opt ){
             //..die Anzahl Stimmen herausfinden
             if($withStimmen){
-                $results = Votinganswer::getResultStatisticWithStimmen($votingquestion,$opt->id);
-                if( count($results)>0 && $sumValues>0 ){
-                    $results["percent"]     = round($results["anz"]/$sumValues * 100,2);//prozent berechnen
-                    $results["value"]    = $opt->value;
-                    //zum resultset hinzufügen
-                    $resultstatistics[] = $results;
-                }
+                $results = Votinganswer::getResultStatisticWithStimmen($votingquestion,$opt->value);
             }
-            else {
-                $results = Votinganswer::getResultStatistic($votingquestion,$opt->id);
-                //Yii::debug($results);
-                if($results ){
-                    $results[0]["percent"]  = round($results[0]["anz"]/$sumValues * 100,2);//prozent berechnen
-                    $results[0]["value"]    = $opt->value;
-                    //zum resultset hinzufügen
-                    $resultstatistics[] = $results[0];
-                }
-            }
+            else
+                $results = Votinganswer::getResultStatistic($votingquestion,$opt->value);
             //..falls keine Stimmen, eigenes Objekt mit anz und percent anlegen
-            if(!$results ){
+            if(!$results){
+                $results = [];
                 $res = [];
-                $res["votingoption_id"] = $opt->id;
                 $res["anz"] = 0;
                 $res["value"] = $opt->value;
                 $res["percent"]= 0;//prozent berechnen
-                $resultstatistics[] = $res;
+                $results[] = $res;
             }
-            /*
             else {
-                //Yii::debug($results);
-                //Yii::debug('SumValues: '.$sumValues);
                 //..falls Stimme vorhanden nur percent ausrechnen
-                $results["percent"] = round($results["anz"]/$sumValues * 100,2);//prozent berechnen
+                $results[0]["percent"] = round($results[0]["anz"]/$sumValues * 100,2);//prozent berechnen
             }
-             */
             //zum resultset hinzufügen
-            //$resultstatistics[] = $results;
+            $resultstatistics[] = $results[0];
         }
         return $resultstatistics;
         
@@ -417,15 +314,5 @@ class Votinganswer extends \yii\db\ActiveRecord
         
     }   
 
-    public static function deleteResultOfVW($votingquestion_id, $vw_id)
-    {
-        return Votinganswer::deleteAll(['votingquestion_id'=>$votingquestion_id, 'votingweights_id'=>$vw_id]);
-    }
-
-    public static function deleteResultOfQuestion($votingquestion_id)
-    {
-        return Votinganswer::deleteAll(['votingquestion_id'=>$votingquestion_id]);
-    }
-    
     
 }

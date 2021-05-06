@@ -72,6 +72,24 @@ class Votingweights extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getVotinganswersOfQuestion($votingquestion_id, $votingweights_id)
+    {
+        return Votinganswer::find()->where(['votingweights_id' => $votingweights_id,'votingquestion_id'=>$votingquestion_id])->all();
+    }
+    
+    /**
+     * Zählt die abgegebenen Values
+     * @return int
+     */
+    public static function countActiveVW($votingtopic)
+    {
+        return Votingweights::find()->where(['votingtopic_id'=>$votingtopic->id, 'active'=>1])->count();
+    }
+    
+    
+    /**
      * Setzt die Stimmen als aktiv/anwesend
      * @param boolean $value
      * @return \yii\db\ActiveQuery

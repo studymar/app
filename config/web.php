@@ -73,7 +73,7 @@ $config = [
                         'yii\base\View::renderFile',
                     ],
                     'exportInterval' => 1,
-                    'logFile' => '@runtime/logs/yiiharburg.log',
+                    'logFile' => '@runtime/logs/app.log',
                     'logVars' => [],
                     //'logVars' => ['_SERVER'],
                 ],
