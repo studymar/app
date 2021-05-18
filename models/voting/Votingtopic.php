@@ -131,7 +131,7 @@ class Votingtopic extends \yii\db\ActiveRecord
      */
     public function getPublicVotingquestions()
     {
-        return $this->hasMany(Votingquestion::className(), ['votingtopic_id' => 'id'])->where('active = 1')->orderBy('sort desc')->with('votingtype');
+        return $this->hasMany(Votingquestion::className(), ['votingtopic_id' => 'id'])->where('active = 1')->orderBy('sort asc')->with('votingtype');
     }    
     
     /**
