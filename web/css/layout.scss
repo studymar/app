@@ -13,7 +13,7 @@ html { height: 100%; font-size: 62.5% }
 
 body {
 height: 100%;
-background: #FFFFFF url('../img/layout/hd-bg.gif') repeat-x 0 10px;
+/* background: #FFFFFF url('../img/layout/hd-bg.gif') repeat-x 0 10px; */
 text-align: center;
 font: 1.2em Verdana, Arial, Helvetica, sans-serif;
 /* min-width: 960px; */
@@ -189,12 +189,13 @@ margin-bottom: 10px;
 /* Header */
 
 #header {
-width: 960px;
+/*width: 960px;*/
+width: auto;
 height: 149px;
 margin: 0 auto;
 position: relative;
 text-align: left;
-/*background: #327000 url('../img/layout/hd-bg.gif') repeat-x 0 0;*/
+background: #327000 url('../img/layout/hd-bg.gif') repeat-x 0 0;
 }
 
 #header p.title {
