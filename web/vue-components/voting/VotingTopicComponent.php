@@ -37,8 +37,8 @@ else $env_vuecomponent_dir = "vue-components/voting/";
 
             <div class="list-group" v-if="items != null && items.length>0" >
                <span v-for="(item,index) in items" :key="item.id">
-                   <div class="list-group-item rounded mb-1" v-bind:class="[{'list-group-item-action': item.hasAnswered.length==0},{'inactive': item.hasAnswered.length>0}]">
-                        <a href="" class="stretched-link" v-on:click.prevent="$parent.openVote(item)" v-if="item.hasAnswered.length==0"></a>
+                   <div class="list-group-item rounded mb-1" v-bind:class="[{'list-group-item-action': (item.hasAnswered.length==0 || item.hasAnswered==0)},{'inactive': item.hasAnswered.length>0}]">
+                        <a href="" class="stretched-link" v-on:click.prevent="$parent.openVote(item)" v-if="item.hasAnswered.length==0 || item.hasAnswered==0"></a>
                         <div class="d-flex w-100 justify-content-between">
                           <div class="mb-1 fs-5">{{item.question}}</div>
                         </div>
@@ -51,7 +51,7 @@ else $env_vuecomponent_dir = "vue-components/voting/";
                             </div>
                             <div class="col-sm-10 mb-1">
                                 <ul class="property-list">
-                                    <li v-if="item.votingtype && item.hasAnswered.length==0">
+                                    <li v-if="item.votingtype && (item.hasAnswered == 0 || item.hasAnswered.length==0)">
                                         <span class="material-icons">east</span>
                                         {{item.votingtype.description}}
                                     </li>
