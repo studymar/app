@@ -37,7 +37,7 @@ else $env_vuecomponent_dir = "vue-components/voting/";
 
             <div class="list-group" v-if="items != null && items.length>0" >
                <span v-for="(item,index) in items" :key="item.id">
-                   <div class="list-group-item rounded mb-1" v-bind:class="[{'list-group-item-action': (item.hasAnswered.length==0 || item.hasAnswered==0)},{'inactive': item.hasAnswered.length>0}]">
+                   <div class="list-group-item rounded mb-1" v-bind:class="[{'list-group-item-action': (item.hasAnswered.length==0 || item.hasAnswered==0)},{'inactive': (item.hasAnswered.length>0 || item.hasAnswered==1)}]">
                         <a href="" class="stretched-link" v-on:click.prevent="$parent.openVote(item)" v-if="item.hasAnswered.length==0 || item.hasAnswered==0"></a>
                         <div class="d-flex w-100 justify-content-between">
                           <div class="mb-1 fs-5">{{item.question}}</div>
@@ -60,7 +60,7 @@ else $env_vuecomponent_dir = "vue-components/voting/";
                                         <span>Ihre Antwort: </span>
                                         <span v-for="(answer,index) in item.hasAnswered" :key="answer">{{answer}}{{(index < (item.hasAnswered.length-1))?' | ':''}}</span>
                                     </li>
-                                    <li v-if="item.hasAnswered.length>0">
+                                    <li v-if="item.hasAnswered.length>0 || item.hasAnswered==1">
                                         <span class="material-icons green">check</span>
                                         bereits abgestimmt
                                     </li>

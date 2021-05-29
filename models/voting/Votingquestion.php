@@ -183,9 +183,19 @@ class Votingquestion extends \yii\db\ActiveRecord
         $answerer = sha1(Yii::$app->getRequest()->getRemoteIP());
         $answers = Votinganswer::find()->where(['votingquestion_id'=>$votingquestion_id])->andWhere(['answerer'=>$answerer])->asArray()->all();
         if($answers && count($answers)>0){
-            return 1;
+            $ret     = [];
+            foreach($answers as $answer){
+                if($answer['value']!="")
+                    $ret[] = $answer['value'];
+                else {
+                    $opt_id = $answer['votingoption_id'];
+                    $option = Votingoption::find()->where(['id'=>$opt_id])->one();
+                    $ret[]  = $option->value; 
+                }
+            }
+            return $ret;
         }
-        return 0;
+        return [];
     }
 
     
