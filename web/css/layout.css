@@ -22,6 +22,10 @@ body {
   margin-right: 0px;
   margin-left: 0px; }
 
+.col-sm-1 {
+  flex: 0 0 auto;
+  width: 8.3333333333%; }
+
 /* bar oberer Rand */
 #bar {
   background: #151515;
@@ -364,7 +368,8 @@ ul.r-list li a.active, ul.r-list li a:hover {
   border-top: 6px solid #1B3D00; }
 
 #footer-in {
-  width: 960px;
+  /*width: 960px;*/
+  width: auto;
   margin: 0 auto;
   font: 1.2em Georgia, "Times New Roman", Times, serif; }
 
@@ -374,7 +379,8 @@ ul.r-list li a.active, ul.r-list li a:hover {
   text-align: left;
   font-size: 0.9em;
   float: left;
-  width: 650px;
+  /*width: 650px;*/
+  width: auto;
   color: #FBFBFB; }
 
 #footer-in ul li {
